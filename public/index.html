@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<!-- insert meta data and more into headtag-->
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<!-- insert the things u wanna display into the bodytag-->
+<body>
+    <h1>しりとり</h1>
+    <!-- this shows the current word -->
+    <p id="previousWord"></p>
+    <!-- form to enter the nextWord -->
+    <input id="nextWordInput" type="text"/>
+    <button id="nextWordSendButton">送信</button>
+
+    <!-- JavaScript execution-->
+    <script>
+        window.onload = async(event)=>{
+
+            // execute GET /shiritori
+            const response = await fetch("/shiritori", {method: "GET"});
+            
+            // get "response"'s text data from "response"
+            const previousWord = await response.text();
+
+            // id: get previousWord's tag
+            const paragraph = document.querySelector("#previousWord");
+
+            // rewrite the insides of the tag
+            paragraph.innerHTML = `前の単語: ${previousWord}`;
+        }
+
+        // when button is pressed
+        document.querySelector("#nextWordSendButton").onclick = async(event) => {
+            // get input tag
+            const nextWordInput = document.querySelector("#nextWordInput");
+            // get the insides of "input" tag
+            const nextWordInputText = nextWordInput.value;
+            // execute POST /shiritori
+            // save the next word in "response"
+            const response = await fetch(
+                "/shiritori",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({nextWord : nextWordInputText})
+                }
+            );
+
+            // error if status != 200
+            if(response.status != 200){
+                const errorJson = await response.text();
+                const errorObj = JSON.parse(errorJson);
+                alert(errorObj["errorMessage"]);
+            }
+
+            const previousWord = await response.text();
+
+            // id: get previousWord's tag
+            const paragraph = document.querySelector("#previousWord");
+            // rewrite the insides of the tag
+            paragraph.innerHTML = `前の単語: ${previousWord}`;
+            // clear the insides of input tag(reset input)
+            nextWordInput.value = "";
+        }
+    </script>
+</body>
+
+</html>
