@@ -7,14 +7,56 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 
+<style>
+    .container {
+        height: 600px;
+        text-align: center;
+    }
+    .container h1{
+        margin: 0;
+        position:absolute;
+        top: 40%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .container p{
+        margin: 0;
+        position:absolute;
+        top: 45%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .container input{
+        margin: 0;
+        position:absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .container button{
+        margin: 0;
+        position:absolute;
+        top: 55%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
+
 <!-- insert the things u wanna display into the bodytag-->
 <body>
-    <h1>しりとり</h1>
-    <!-- this shows the current word -->
-    <p id="previousWord"></p>
-    <!-- form to enter the nextWord -->
-    <input id="nextWordInput" type="text"/>
-    <button id="nextWordSendButton">送信</button>
+    <div class="container">
+        <h1 id="title">しりとり</h1>
+        <!-- this shows the current word -->
+        <p id="previousWord"></p>
+        <!-- form to enter the nextWord -->
+        <input id="nextWordInput" type="text" placeholder="ここに入力しよう"/>
+        <br>
+        <button id="nextWordSendButton">送信</button>
+    </div>
 
     <!-- JavaScript execution-->
     <script>
@@ -66,6 +108,11 @@
             // clear the insides of input tag(reset input)
             nextWordInput.value = "";
         }
+        document.querySelector("#nextWordInput").addEventListener("keyup", event => {
+            if(event.key !== "Enter") return; // Use `.key` instead.
+            document.querySelector("#nextWordSendButton").click(); // Things you want to do.
+            event.preventDefault();
+        });
     </script>
 </body>
 
