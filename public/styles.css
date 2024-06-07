@@ -4,6 +4,5 @@ body{
     height: 300px;
     width: 645px;
     text-align: center;
-    line-height: 400px;
-    border: 2px solid black;    
+    line-height: 400px; 
 }
