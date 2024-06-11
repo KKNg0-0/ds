@@ -9,13 +9,13 @@ const manyWords = ["しりとり", "まかない", "ばけもの", "じゅぎょ
                    "うた", "こうざ", "たつ"];
 
 function randomWordGen(manyWords){
-    let hehe = Math.floor(Math.random() * manyWords.length());
-    return manyWords(hehe);
+    const hehe = Math.floor(Math.random() * 16);
+    return manyWords[hehe];
 }
 
 
 // save the previous word
-let previousWord = "しりとり";
+let previousWord = randomWordGen(manyWords);
 let brain = [];
 brain.push(previousWord);
 
@@ -90,8 +90,9 @@ Deno.serve(async (request) =>{
     }
 
     if(request.method == "POST" && pathname === "/reset"){
-        previousWord = "しりとり";
-        brain = ["しりとり"]; // clear the "brain" array
+        previousWord = randomWordGen(manyWords);
+        brain.length = 0 // clear the "brain" array
+        brain.push(previousWord);
         nextWord = requestJson["nextWord"];
     }
     
