@@ -1,8 +1,4 @@
 /* public/styles.css */
 body{
-    background: skyblue;
-    height: 300px;
-    width: 645px;
-    text-align: center;
-    line-height: 400px; 
+    background: rgb(43, 34, 34);
 }
