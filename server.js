@@ -4,10 +4,20 @@
 // at deno, can be imported directly using url
 import { serveDir } from "https://deno.land/std@0.223.0/http/file_server.ts";
 
+const manyWords = ["しりとり", "まかない", "ばけもの", "じゅぎょう", "いちかわ", "やまなし",
+                   "しずおか", "かおり", "けしき", "きゃんぷ", "どうぐ", "たきび", "いす", 
+                   "うた", "こうざ", "たつ"];
+
+function randomWordGen(manyWords){
+    let hehe = Math.floor(Math.random() * manyWords.length());
+    return manyWords(hehe);
+}
+
+
 // save the previous word
 let previousWord = "しりとり";
-let brain = ["しりとり"];
-//brain.push(previousWord);
+let brain = [];
+brain.push(previousWord);
 
 // local hostにDenoのHTTPサーバーを展開
 Deno.serve(async (request) =>{
@@ -47,9 +57,10 @@ Deno.serve(async (request) =>{
                     }
                 );
             }else if(nextWord.slice(-1) === "ん"){
+                brain.push(previousWord);
                 return new Response(
                     JSON.stringify({
-                        "errorMessage": "“ん”で終わってしまった\nゲームをリセットします!",
+                        "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームをリセットします!`,
                         "errorCode": "10001"
                     }),
                     {

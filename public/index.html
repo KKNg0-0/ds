@@ -4,64 +4,12 @@
 <!-- insert meta data and more into headtag-->
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="astyles.css">
 </head>
 
 <style>
-    .container {
-        height: 600px;
-        text-align: center;
-    }
-    .container h1{
-        margin: 0;
-        position:absolute;
-        top: 39%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    .container #previousWord{
-        margin: 0;
-        position:absolute;
-        top: 45%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    .container input{
-        margin: 0;
-        text-align:center;
-        position:absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    .container #nextWordSendButton{
-        margin: 0;
-        position:absolute;
-        display:block;
-        top: 55%;
-        left: 46%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    .container #resetButton{
-        margin: 0;
-        position:absolute;
-        display:block;
-        top: 55%;
-        left: 53%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-    .container #wordList{
-        margin: 0;
-        position:absolute;
-        top: 60%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
+    .container{
+        color: white;
     }
 </style>
 
@@ -73,7 +21,6 @@
         <p id="previousWord"></p>
         <!-- form to enter the nextWord -->
         <input id="nextWordInput" type="text" placeholder="ここに入力しよう"/>
-        <br>
         <button id="nextWordSendButton">送信</button>
         <button id="resetButton">リセット</button>
         <br>
@@ -120,18 +67,20 @@
 
             // error if status != 200
             if(response.status != 200){
-                if(response.status === 400){
                 const errorJson = await response.text();
                 const errorObj = JSON.parse(errorJson);
+                if(response.status === 400){       // no
                 alert(errorObj["errorMessage"]);    
-                }else if(response.status === 401){
-                    const errorBoi = await response.text();
-                    const errorObj = JSON.parse(errorBoi);
+                }else if(response.status === 401){ // same word exists
                     alert(errorObj["errorMessage"]);
-                }else if(response.status === 402){
-                    const errorJson = await response.text();
-                    const errorObj = JSON.parse(errorJson);
+                }else if(response.status === 402){ // “ん”で終わってしまった
+                    const paragraph = document.querySelector("#previousWord")
+                    paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
+
+                    nextWordInput.remove(); // remove input box
+                    document.querySelector("#nextWordSendButton").remove(); // remove the send button
                     alert(errorObj["errorMessage"]);
+                    //document.querySelector("#resetButton").click();   // auto reset the game
                 }
                 
             }
