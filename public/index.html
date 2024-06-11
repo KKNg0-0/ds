@@ -15,12 +15,12 @@
     .container h1{
         margin: 0;
         position:absolute;
-        top: 40%;
+        top: 39%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
-    .container p{
+    .container #previousWord{
         margin: 0;
         position:absolute;
         top: 45%;
@@ -30,16 +30,35 @@
     }
     .container input{
         margin: 0;
+        text-align:center;
         position:absolute;
         top: 50%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
-    .container button{
+    .container #nextWordSendButton{
         margin: 0;
         position:absolute;
+        display:block;
         top: 55%;
+        left: 46%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .container #resetButton{
+        margin: 0;
+        position:absolute;
+        display:block;
+        top: 55%;
+        left: 53%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .container #wordList{
+        margin: 0;
+        position:absolute;
+        top: 60%;
         left: 50%;
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
@@ -56,6 +75,9 @@
         <input id="nextWordInput" type="text" placeholder="ここに入力しよう"/>
         <br>
         <button id="nextWordSendButton">送信</button>
+        <button id="resetButton">リセット</button>
+        <br>
+        <p id="wordList"></p>
     </div>
 
     <!-- JavaScript execution-->
@@ -64,15 +86,19 @@
 
             // execute GET /shiritori
             const response = await fetch("/shiritori", {method: "GET"});
+            const response2 = await fetch("/shiritori", {method: "WORD"});
             
             // get "response"'s text data from "response"
             const previousWord = await response.text();
+            const wordList = await response2.text();
 
             // id: get previousWord's tag
             const paragraph = document.querySelector("#previousWord");
+            const paragraph2 = document.querySelector("#wordList");
 
             // rewrite the insides of the tag
             paragraph.innerHTML = `前の単語: ${previousWord}`;
+            paragraph2.innerHTML = `スタート: ${wordList}`;
         }
 
         // when button is pressed
@@ -94,23 +120,58 @@
 
             // error if status != 200
             if(response.status != 200){
+                if(response.status === 400){
                 const errorJson = await response.text();
                 const errorObj = JSON.parse(errorJson);
-                alert(errorObj["errorMessage"]);
+                alert(errorObj["errorMessage"]);    
+                }else if(response.status === 401){
+                    const errorBoi = await response.text();
+                    const errorObj = JSON.parse(errorBoi);
+                    alert(errorObj["errorMessage"]);
+                }else if(response.status === 402){
+                    const errorJson = await response.text();
+                    const errorObj = JSON.parse(errorJson);
+                    alert(errorObj["errorMessage"]);
+                }
+                
             }
 
+            const response2 = await fetch(
+                "/shiritori",
+                {
+                    method: "WORD",
+                    //headers: {"Content-Type": "application/json"},
+                    //body: JSON.stringify({nextWord : nextWordInputText})
+                }
+            );
+
             const previousWord = await response.text();
+            const wordList = await response2.text();
 
             // id: get previousWord's tag
             const paragraph = document.querySelector("#previousWord");
+            const paragraph2 = document.querySelector("#wordList");
             // rewrite the insides of the tag
             paragraph.innerHTML = `前の単語: ${previousWord}`;
+            paragraph2.innerHTML = `使った単語: ${wordList}`;
             // clear the insides of input tag(reset input)
             nextWordInput.value = "";
         }
+        document.querySelector("#resetButton").onclick = async(event) => {
+            // execute /reset
+            const response = await fetch(
+                "/reset",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"}
+                }
+            );
+            window.location.reload();
+        }
+
         document.querySelector("#nextWordInput").addEventListener("keyup", event => {
-            if(event.key !== "Enter") return; // Use `.key` instead.
-            document.querySelector("#nextWordSendButton").click(); // Things you want to do.
+            if(event.key !== "Enter") return; 
+            document.querySelector("#nextWordSendButton").click(); // Click button when enter is pressed.
             event.preventDefault();
         });
     </script>
