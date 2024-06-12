@@ -8,6 +8,7 @@
 - Enterキーで送信する
 - ホーム画面の実装
 - マルチプレイヤー（二人）の実装
+- ランダムな単語で始まる（単語のランダム生成でない）
 
 # Run using Command Prompt
 - deno run --allow-net --allow-read --watch server.js
