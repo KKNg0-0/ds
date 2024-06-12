@@ -49,7 +49,7 @@ Deno.serve(async (request) =>{
             if(brain.includes(nextWord) === true){
                 return new Response(
                     JSON.stringify({
-                        "errorMessage": "同じ単語を検出しました",
+                        "errorMessage": "同じ単語を検出しました\nゲームを終了します!",
                         "errorCode": "10001"
                     }),
                     {
@@ -58,31 +58,16 @@ Deno.serve(async (request) =>{
                     }
                 );
             }else if(nextWord.slice(-1) === "ん"){
-                const gameMode = request.url;
-                console.log(gameMode);
-                if(gameMode.includes("multiplayer.html")){
-                    return new Response(
-                        JSON.stringify({
-                            "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\n${playerNext}が勝ちました!`,
-                            "errorCode": "10001"
-                        }),
-                        {
-                            status: 402,
-                            headers: {"Content-Type": "application/json; charset=utf-8"},
-                        }
-                    );
-                }else{
-                    return new Response(
-                        JSON.stringify({
-                            "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームを終了します!`,
-                            "errorCode": "10001"
-                        }),
-                        {
-                            status: 402,
-                            headers: {"Content-Type": "application/json; charset=utf-8"},
-                        }
-                    );
-                }
+                return new Response(
+                    JSON.stringify({
+                        "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームを終了します!`,
+                        "errorCode": "10001"
+                    }),
+                    {
+                        status: 402,
+                        headers: {"Content-Type": "application/json; charset=utf-8"},
+                    }
+                );
             }else{
                 previousWord = nextWord;    // only update if nextWord wasn't in "brain"
             }

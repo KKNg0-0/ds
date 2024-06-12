@@ -75,9 +75,18 @@
                 const errorJson = await response.text();
                 const errorObj = JSON.parse(errorJson);
                 if(response.status === 400){       // no
-                alert(errorObj["errorMessage"]);    
+                alert(errorObj["errorMessage"]);
+
                 }else if(response.status === 401){ // same word exists
                     alert(errorObj["errorMessage"]);
+                    const paragraph = document.querySelector("#previousWord");
+                    paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
+                    const playerNow = document.querySelector("#playerNow");
+                    const playerLost = playerNow.innerHTML;
+                    playerNow.innerHTML = `${playerLost}が負けました！`;
+                    document.querySelector("#nextWordInput").remove();; // remove input box
+                    document.querySelector("#nextWordSendButton").remove(); // remove the send button
+
                 }else if(response.status === 402){ // “ん”で終わってしまった
                     alert(errorObj["errorMessage"]);                   
                     const paragraph = document.querySelector("#previousWord");
@@ -89,7 +98,6 @@
                     document.querySelector("#nextWordSendButton").remove(); // remove the send button
                     //document.querySelector("#resetButton").click();   // auto reset the game
                 }
-                
             }
 
             const response2 = await fetch("/shiritori", {method: "WORD",});

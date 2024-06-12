@@ -14,7 +14,7 @@
 </style>
 
 <!-- insert the things u wanna display into the bodytag-->
-<body>
+<body data-page="singleP">
     <div class="container">
         <h1 id="title">しりとり</h1>
         <!-- this shows the current word -->
@@ -75,9 +75,16 @@
                 const errorJson = await response.text();
                 const errorObj = JSON.parse(errorJson);
                 if(response.status === 400){       // no
-                alert(errorObj["errorMessage"]);    
+                alert(errorObj["errorMessage"]);
+
                 }else if(response.status === 401){ // same word exists
                     alert(errorObj["errorMessage"]);
+                    const paragraph = document.querySelector("#previousWord")
+                    paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
+
+                    nextWordInput.remove(); // remove input box
+                    document.querySelector("#nextWordSendButton").remove(); // remove the send button
+                    
                 }else if(response.status === 402){ // “ん”で終わってしまった
                     const paragraph = document.querySelector("#previousWord")
                     paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
