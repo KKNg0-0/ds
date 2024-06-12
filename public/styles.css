@@ -1,4 +1,52 @@
 /* public/styles.css */
-body{
-    background: rgb(43, 34, 34);
+body, html{
+    background: rgb(17, 4, 4);
+    height: 100%;
+    margin: 0;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: white;
+}
+#title{
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+#previousWord{
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+#nextWordInput{
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.buttonsHere{
+    display: flex;
+    gap: 10px;
+}
+#nextWordSendButton{
+    margin: 0;
+    padding: auto;
+}
+#resetButton{
+    margin: 0;
+    padding: auto;
+}
+#wordList{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 10px;
+}
+#toMenu{
+    font-size: 15px;
+    margin-top: -5px;
 }

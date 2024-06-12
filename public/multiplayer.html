@@ -29,6 +29,7 @@
             <button id="resetButton">リセット</button>
         </div>
         <p id="wordList">try</p>
+        <button id="toMenu">戻る</button>
     </div>
 
     <!-- JavaScript execution-->
@@ -100,6 +101,7 @@
 
             const previousWord = await response.text();
             const wordList = await response2.text();
+            const playerNow = document.querySelector("#playerNow");
 
             // id: get previousWord's tag
             const paragraph = document.querySelector("#previousWord");
@@ -109,6 +111,11 @@
             paragraph2.innerHTML = `使った単語: ${wordList}`;
             // clear the insides of input tag(reset input)
             nextWordInput.value = "";
+            if(playerNow.innerHTML == "Player 1"){
+                playerNow.innerHTML = "Player 2";
+            }else{
+                playerNow.innerHTML = "Player 1";
+            }
         }
         document.querySelector("#resetButton").onclick = async(event) => {
             // execute /reset
@@ -120,6 +127,16 @@
                 }
             );
             window.location.reload();
+        }
+        document.querySelector("#toMenu").onclick = async(event) => {
+            const response = await fetch(
+                "/reset",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"}
+                }
+            );
+            window.location.href = '/home.html';
         }
 
         document.querySelector("#nextWordInput").addEventListener("keyup", event => {
