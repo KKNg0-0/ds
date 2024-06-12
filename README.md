@@ -8,3 +8,9 @@
 - Enterキーで送信する
 - ホーム画面の実装
 - マルチプレイヤー（二人）の実装
+
+# Run using Command Prompt
+- deno run --allow-net --allow-read --watch server.js
+
+# Deployed URL
+- https://deno-shiritori-hikage.deno.dev/home.html
