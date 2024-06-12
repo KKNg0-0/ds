@@ -18,8 +18,7 @@ function randomWordGen(manyWords){
 let previousWord = randomWordGen(manyWords);
 let brain = [];
 brain.push(previousWord);
-let player1;
-let player2;
+let playerNext = 2;
 
 // local hostにDenoのHTTPサーバーを展開
 Deno.serve(async (request) =>{
@@ -36,7 +35,7 @@ Deno.serve(async (request) =>{
     if(request.method == "WORD" && pathname === "/shiritori"){
         return new Response(brain);
     }
-
+    
     // POST /shiritori: input(enter) the next word
     if(request.method == "POST" && pathname === "/shiritori"){
         // get request's payload
@@ -59,17 +58,31 @@ Deno.serve(async (request) =>{
                     }
                 );
             }else if(nextWord.slice(-1) === "ん"){
-                brain.push(previousWord);
-                return new Response(
-                    JSON.stringify({
-                        "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームを終了します!`,
-                        "errorCode": "10001"
-                    }),
-                    {
-                        status: 402,
-                        headers: {"Content-Type": "application/json; charset=utf-8"},
-                    }
-                );
+                const gameMode = request.url;
+                console.log(gameMode);
+                if(gameMode.includes("multiplayer.html")){
+                    return new Response(
+                        JSON.stringify({
+                            "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\n${playerNext}が勝ちました!`,
+                            "errorCode": "10001"
+                        }),
+                        {
+                            status: 402,
+                            headers: {"Content-Type": "application/json; charset=utf-8"},
+                        }
+                    );
+                }else{
+                    return new Response(
+                        JSON.stringify({
+                            "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームを終了します!`,
+                            "errorCode": "10001"
+                        }),
+                        {
+                            status: 402,
+                            headers: {"Content-Type": "application/json; charset=utf-8"},
+                        }
+                    );
+                }
             }else{
                 previousWord = nextWord;    // only update if nextWord wasn't in "brain"
             }
@@ -87,6 +100,11 @@ Deno.serve(async (request) =>{
             );
         }
         brain.push(previousWord);
+        if(playerNext == 1){
+            playerNext = 2;
+        }else{
+            playerNext = 1;
+        }
         // return current word
         return new Response(previousWord);
     }
