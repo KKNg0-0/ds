@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<!-- insert meta data and more into headtag-->
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="homes.css">
+</head>
+
+<style>
+    #title{
+        text-align: center;
+    }
+</style>
+
+<!-- insert the things u wanna display into the bodytag-->
+<body>
+    <div class="container">
+        <h1 id="title">しりとりゲーム</h1>
+        <div class="buttonsHere">
+            <button id="singleP">SinglePlayer</button>
+            <button id="multiP">Multiplayer</button>
+        </div>
+    </div>
+
+    <!-- JavaScript execution-->
+    <script>
+        window.onload = async(event)=>{
+
+            // execute GET /shiritori
+            const response = await fetch("/shiritori", {method: "GET"});
+            const response2 = await fetch("/shiritori", {method: "WORD"});
+            
+            // get "response"'s text data from "response"
+            const previousWord = await response.text();
+            const wordList = await response2.text();
+
+            // id: get previousWord's tag
+            const paragraph = document.querySelector("#previousWord");
+            const paragraph2 = document.querySelector("#wordList");
+
+            // rewrite the insides of the tag
+            paragraph.innerHTML = `前の単語: ${previousWord}`;
+            paragraph2.innerHTML = `スタート: ${wordList}`;
+        }
+
+        // when button is pressed
+        document.querySelector("#nextWordSendButton").onclick = async(event) => {
+            // get input tag
+            const nextWordInput = document.querySelector("#nextWordInput");
+            // get the insides of "input" tag
+            const nextWordInputText = nextWordInput.value;
+            // execute POST /shiritori
+            // save the next word in "response"
+            const response = await fetch(
+                "/shiritori",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({nextWord : nextWordInputText})
+                }
+            );
+
+            // error if status != 200
+            if(response.status != 200){
+                const errorJson = await response.text();
+                const errorObj = JSON.parse(errorJson);
+                if(response.status === 400){       // no
+                alert(errorObj["errorMessage"]);    
+                }else if(response.status === 401){ // same word exists
+                    alert(errorObj["errorMessage"]);
+                }else if(response.status === 402){ // “ん”で終わってしまった
+                    const paragraph = document.querySelector("#previousWord")
+                    paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
+
+                    nextWordInput.remove(); // remove input box
+                    document.querySelector("#nextWordSendButton").remove(); // remove the send button
+                    alert(errorObj["errorMessage"]);
+                    //document.querySelector("#resetButton").click();   // auto reset the game
+                }
+                
+            }
+
+            const response2 = await fetch(
+                "/shiritori",
+                {
+                    method: "WORD",
+                    //headers: {"Content-Type": "application/json"},
+                    //body: JSON.stringify({nextWord : nextWordInputText})
+                }
+            );
+
+            const previousWord = await response.text();
+            const wordList = await response2.text();
+
+            // id: get previousWord's tag
+            const paragraph = document.querySelector("#previousWord");
+            const paragraph2 = document.querySelector("#wordList");
+            // rewrite the insides of the tag
+            paragraph.innerHTML = `前の単語: ${previousWord}`;
+            paragraph2.innerHTML = `使った単語: ${wordList}`;
+            // clear the insides of input tag(reset input)
+            nextWordInput.value = "";
+        }
+        document.querySelector("#resetButton").onclick = async(event) => {
+            // execute /reset
+            const response = await fetch(
+                "/reset",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"}
+                }
+            );
+            window.location.reload();
+        }
+
+        document.querySelector("#nextWordInput").addEventListener("keyup", event => {
+            if(event.key !== "Enter") return; 
+            document.querySelector("#nextWordSendButton").click(); // Click button when enter is pressed.
+            event.preventDefault();
+        });
+    </script>
+</body>
+
+</html>
