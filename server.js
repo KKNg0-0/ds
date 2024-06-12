@@ -18,6 +18,8 @@ function randomWordGen(manyWords){
 let previousWord = randomWordGen(manyWords);
 let brain = [];
 brain.push(previousWord);
+let player1;
+let player2;
 
 // local hostにDenoのHTTPサーバーを展開
 Deno.serve(async (request) =>{
@@ -60,7 +62,7 @@ Deno.serve(async (request) =>{
                 brain.push(previousWord);
                 return new Response(
                     JSON.stringify({
-                        "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームをリセットします!`,
+                        "errorMessage": `${nextWord}を入力され、“ん”で終わってしまったので、\nゲームを終了します!`,
                         "errorCode": "10001"
                     }),
                     {
@@ -97,6 +99,17 @@ Deno.serve(async (request) =>{
     }
     
     // make ./pulbic 's file public
+
+    if (request.method === "GET" && (pathname === "/" || pathname === "/home")) {
+        const file = await Deno.readFile("./public/home.html");
+        return new Response(file, {
+            status: 200,
+            headers: {
+                "Content-Type": "text/html; charset=utf-8"
+            }
+        });
+    }
+
     return serveDir(
         request,
         {

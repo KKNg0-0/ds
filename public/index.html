@@ -21,16 +21,21 @@
         <p id="previousWord"></p>
         <!-- form to enter the nextWord -->
         <input id="nextWordInput" type="text" placeholder="ここに入力しよう"/>
-        <button id="nextWordSendButton">送信</button>
-        <button id="resetButton">リセット</button>
-        <br>
+        <div class="buttonsHere">
+            <button id="nextWordSendButton">送信</button>
+            <button id="resetButton">リセット</button>
+        </div>
         <p id="wordList"></p>
+        <button id="toMenu" onclick="toMenu()">戻る</button>
     </div>
 
     <!-- JavaScript execution-->
     <script>
+        function toMenu(){
+            window.location.href = '/home.html';
+        }
         window.onload = async(event)=>{
-
+            
             // execute GET /shiritori
             const response = await fetch("/shiritori", {method: "GET"});
             const response2 = await fetch("/shiritori", {method: "WORD"});
@@ -116,6 +121,16 @@
                 }
             );
             window.location.reload();
+        }
+        document.querySelector("#toMenu").onclick = async(event) => {
+            const response = await fetch(
+                "/reset",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"}
+                }
+            );
+            window.location.href = '/home.html';
         }
 
         document.querySelector("#nextWordInput").addEventListener("keyup", event => {
