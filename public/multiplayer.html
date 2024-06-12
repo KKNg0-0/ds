@@ -14,7 +14,7 @@
 </style>
 
 <!-- insert the things u wanna display into the bodytag-->
-<body>
+<body data-page="multiP">
     <div class="container">
         <h1 id="title">しりとり</h1>
         <!-- this shows the current word -->
@@ -79,25 +79,20 @@
                 }else if(response.status === 401){ // same word exists
                     alert(errorObj["errorMessage"]);
                 }else if(response.status === 402){ // “ん”で終わってしまった
-                    const paragraph = document.querySelector("#previousWord")
+                    alert(errorObj["errorMessage"]);                   
+                    const paragraph = document.querySelector("#previousWord");
                     paragraph.innerHTML = errorObj["errorMessage"]; // replace with error message
-
-                    nextWordInput.remove(); // remove input box
+                    const playerNow = document.querySelector("#playerNow");
+                    const playerLost = playerNow.innerHTML;
+                    playerNow.innerHTML = `${playerLost}が負けました！`;
+                    document.querySelector("#nextWordInput").remove();; // remove input box
                     document.querySelector("#nextWordSendButton").remove(); // remove the send button
-                    alert(errorObj["errorMessage"]);
                     //document.querySelector("#resetButton").click();   // auto reset the game
                 }
                 
             }
 
-            const response2 = await fetch(
-                "/shiritori",
-                {
-                    method: "WORD",
-                    //headers: {"Content-Type": "application/json"},
-                    //body: JSON.stringify({nextWord : nextWordInputText})
-                }
-            );
+            const response2 = await fetch("/shiritori", {method: "WORD",});
 
             const previousWord = await response.text();
             const wordList = await response2.text();
