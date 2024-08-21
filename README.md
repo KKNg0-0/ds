@@ -1,4 +1,7 @@
-# Deno Shiritori
+# A simple shiritori game made by using Deno
+This is a simple shiritori game project made by using Deno
+
+# Functions
 - 直前の単語を、表示できるようにする
 - 任意の単語を、入力できるようにする
 - 直前の単語の末尾と、入力した単語の先頭を比較して、同じ場合だけ単語を更新する。違う場合は、エラーを表示する
