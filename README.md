@@ -14,10 +14,13 @@ This is a simple shiritori game project made by using Deno
 - ランダムな単語で始まる（単語のランダム生成でない）
 - 過去に使用された単語の表示
 
-# Run using Windows Powershell/Terminal
+# Run using Windows Powershell/Terminal(local)
 - deno run --allow-net --allow-read --watch server.js
 
-# Reference:
+# Deployed URL
+- https://deno-shiritori-hikage.deno.dev/home.html
+
+# Reference used:
 - enter to press button:
 https://stackoverflow.com/questions/12955222/how-do-i-trigger-an-html-button-when-the-enter-key-is-pressed-in-a-textbox/24245592#24245592
 
@@ -30,5 +33,4 @@ https://www.w3schools.com/css/css_align.asp
 - random number generator:
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 
-# Deployed URL
-- https://deno-shiritori-hikage.deno.dev/home.html
+
