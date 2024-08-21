@@ -11,7 +11,7 @@
 - ランダムな単語で始まる（単語のランダム生成でない）
 - 過去に使用された単語の表示
 
-# Run using Command Prompt
+# Run using Windows Powershell/Terminal
 - deno run --allow-net --allow-read --watch server.js
 
 # Reference:
