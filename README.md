@@ -1,5 +1,6 @@
 # A simple shiritori game made by using Deno
 This is a simple shiritori game project made by using Deno
+![image](https://github.com/user-attachments/assets/24366fdd-7614-48a8-9250-953adf810892)
 
 # Functions
 - 直前の単語を、表示できるようにする
