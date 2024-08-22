@@ -16,7 +16,7 @@ This is a simple shiritori game project made by using Deno
 - 過去に使用された単語の表示
 
 # Run using Windows Powershell/Terminal(local)
-- deno run --allow-net --allow-read --watch server.js
+- deno run --allow-net --allow-read --watch server.js\
   or
 - deno task start
 
