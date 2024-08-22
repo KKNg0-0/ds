@@ -17,6 +17,8 @@ This is a simple shiritori game project made by using Deno
 
 # Run using Windows Powershell/Terminal(local)
 - deno run --allow-net --allow-read --watch server.js
+  or
+- deno task start
 
 # Deployed URL
 - https://deno-shiritori-hikage.deno.dev/home.html
